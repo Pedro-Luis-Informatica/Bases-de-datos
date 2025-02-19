@@ -1,35 +1,21 @@
 1. CONSULTAS CONDICIONALES
 Selecciona los productos cuyo precio de lista sea mayor a 100.
-sql
-Copiar código
 SELECT * FROM tabla_de_productos WHERE PRECIO_DE_LISTA > 100;
 Obtén los clientes que tienen un límite de crédito entre 5000 y 10000.
-sql
-Copiar código
 SELECT * FROM tabla_de_clientes WHERE LIMITE_DE_CREDITO BETWEEN 5000 AND 10000;
 Lista las facturas con un impuesto superior al 15%.
-sql
-Copiar código
 SELECT * FROM facturas WHERE IMPUESTO > 15;
 
 2. CONSULTAS LIKE
 Encuentra productos cuyo sabor comience con 'C'.
-sql
-Copiar código
 SELECT * FROM tabla_de_productos WHERE SABOR LIKE 'C%';
 Busca clientes cuyo nombre contenga 'Luis'.
-sql
-Copiar código
 SELECT * FROM tabla_de_clientes WHERE NOMBRE LIKE '%Luis%';
 
 3. CONSULTAS DISTINCT
 Muestra los diferentes barrios en los que viven los clientes.
-sql
-Copiar código
 SELECT DISTINCT BARRIO FROM tabla_de_clientes;
 Obtén los sabores únicos de los productos.
-sql
-Copiar código
 SELECT DISTINCT SABOR FROM tabla_de_productos;
 
 4. CONSULTAS LIMIT
@@ -38,34 +24,22 @@ sql
 Copiar código
 SELECT * FROM facturas LIMIT 5;
 Lista los 3 productos más baratos ordenados por precio.
-sql
-Copiar código
 SELECT * FROM tabla_de_productos ORDER BY PRECIO_DE_LISTA ASC LIMIT 3;
 
 5. CONSULTAS ORDER BY
 Ordena a los clientes por su volumen de compra en orden descendente.
-sql
-Copiar código
 SELECT * FROM tabla_de_clientes ORDER BY VOLUMEN_DE_COMPRA DESC;
 Muestra los productos ordenados por sabor y tamaño.
-sql
-Copiar código
 SELECT * FROM tabla_de_productos ORDER BY SABOR, TAMANO;
 
 6. CONSULTAS GROUP BY
 Agrupa las facturas por matrícula del vendedor y muestra el número de facturas emitidas por cada uno.
-sql
-Copiar código
 SELECT MATRICULA, COUNT(*) AS NUMERO_FACTURAS FROM facturas GROUP BY MATRICULA;
 Agrupa los productos por envase y muestra el precio promedio de cada tipo de envase.
-sql
-Copiar código
 SELECT ENVASE, AVG(PRECIO_DE_LISTA) AS PRECIO_PROMEDIO FROM tabla_de_productos GROUP BY ENVASE;
 
 7. CONSULTAS HAVING
 Muestra los vendedores que han emitido más de 10 facturas.
-sql
-Copiar código
 SELECT MATRICULA, COUNT(*) AS TOTAL_FACTURAS FROM facturas GROUP BY MATRICULA HAVING TOTAL_FACTURAS > 10;
 
 # tarea: ¿Quiénes fueron los clientes que realizaron más de 2000 compras en 2016?
@@ -81,8 +55,6 @@ HAVING COUNT(*) > 2000;
 
 8. CONSULTAS CASE
 Crea una consulta que clasifique los productos como "Caro" si su precio es mayor a 50 y "Barato" en caso contrario.
-sql
-Copiar código
 SELECT CODIGO_DEL_PRODUCTO, PRECIO_DE_LISTA, 
        CASE 
            WHEN PRECIO_DE_LISTA > 50 THEN 'Caro'
@@ -109,8 +81,6 @@ order by CLASIFICACION_EDAD;
 
 9. CONSULTAS INNER JOIN
 Lista todas las facturas junto con la información de los clientes.
-sql
-Copiar código
 SELECT f.*, c.NOMBRE AS CLIENTE 
 FROM facturas f 
 INNER JOIN tabla_de_clientes c ON f.DNI = c.DNI;
@@ -129,31 +99,23 @@ order by facturacion;
 
 10. CONSULTAS LEFT Y RIGHT JOIN
 Muestra todas las facturas, incluidas aquellas sin detalles en items_facturas (LEFT JOIN).
-sql
-Copiar código
 SELECT f.*, i.CODIGO_DEL_PRODUCTO 
 FROM facturas f 
 LEFT JOIN items_facturas i ON f.NUMERO = i.NUMERO;
 11. CONSULTAS CROSS JOIN
 Genera una combinación de todos los productos con todos los vendedores.
-sql
-Copiar código
 SELECT p.CODIGO_DEL_PRODUCTO, v.MATRICULA 
 FROM tabla_de_productos p 
 CROSS JOIN tabla_de_vendedores v;
 
 12. CONSULTAS UNION Y FULL JOIN
 Combina los nombres de los clientes y los vendedores en una única lista.
-sql
-Copiar código
 SELECT NOMBRE AS NOMBRE_PERSONA FROM tabla_de_clientes 
 UNION 
 SELECT NOMBRE FROM tabla_de_vendedores;
 
 13. SUBCONSULTAS
 Encuentra las facturas cuyo importe total (cantidad * precio) sea mayor al promedio general de todas las facturas.
-sql
-Copiar código
 SELECT NUMERO, (CANTIDAD * PRECIO) AS IMPORTE_TOTAL 
 FROM items_facturas 
 WHERE (CANTIDAD * PRECIO) > (
