@@ -1,60 +1,57 @@
--- Creación de la tabla empleados
-CREATE TABLE empleados (
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS empleados;
+USE empleados;
+
+-- Crear la tabla de empleados con índices
+CREATE TABLE IF NOT EXISTS empleados (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    apellido VARCHAR(100),
-    email VARCHAR(100) UNIQUE
+    nif VARCHAR(9) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    apellido1 VARCHAR(100) NOT NULL,
+    apellido2 VARCHAR(100),
+    id_departamento INT UNSIGNED,
+    email VARCHAR(100) UNIQUE,
+    INDEX idx_nombre (nombre),
+    INDEX idx_apellido (apellido1, apellido2)
 );
 
--- Creación de índices
+-- Crear la tabla de departamentos
+CREATE TABLE IF NOT EXISTS departamento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    presupuesto DOUBLE UNSIGNED NOT NULL,
+    gastos DOUBLE UNSIGNED NOT NULL
+);
+
+-- Agregar clave foránea después de la creación de la tabla
+ALTER TABLE empleados ADD CONSTRAINT fk_departamento FOREIGN KEY (id_departamento) REFERENCES departamento(id);
+
+-- Insertar datos de prueba
+INSERT INTO departamento (nombre, presupuesto, gastos) VALUES ('IT', 50000, 10000);
+INSERT INTO empleados (nif, nombre, apellido1, apellido2, id_departamento, email) VALUES
+('12345678A', 'Pedro', 'Gómez', 'López', 1, 'pedro@example.com'),
+('87654321B', 'María', 'Fernández', 'Ruiz', 1, 'maria@example.com'),
+('11223344C', 'Luis', 'Martínez', 'Santos', 1, 'luis@example.com');
+
+-- Crear un índice para optimizar las búsquedas por email
 CREATE UNIQUE INDEX idx_email ON empleados(email);
-CREATE INDEX idx_nombre ON empleados(nombre);
-CREATE INDEX idx_nombre_apellido ON empleados(nombre, apellido);
 
--- Creación de la tabla productos
-CREATE TABLE productos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    descripcion TEXT
-);
-
--- Creación de un índice FULLTEXT
-CREATE FULLTEXT INDEX idx_descripcion ON productos(descripcion);
-CREATE FULLTEXT INDEX idx_nombre_desc ON productos(nombre, descripcion);
-
--- Gestión de índices
--- Crear un índice con CREATE INDEX
-CREATE INDEX idx_apellido ON empleados(apellido);
-
--- Crear un índice con ALTER TABLE
-ALTER TABLE empleados ADD INDEX idx_nombre (nombre);
-
--- Crear un índice al definir la tabla
-CREATE TABLE empleados_indexados (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    apellido VARCHAR(100),
-    INDEX idx_nombre_apellido (nombre, apellido)
-);
-
--- Mostrar índices
+-- Mostrar los índices de la tabla empleados
 SHOW INDEX FROM empleados;
-DESCRIBE empleados;
 
--- Eliminar índices
-DROP INDEX idx_nombre ON empleados;
-ALTER TABLE empleados DROP INDEX idx_apellido;
+-- Uso de EXPLAIN para analizar la optimización de una consulta
+EXPLAIN SELECT * FROM empleados WHERE nombre = 'Pedro';
 
--- Optimización de índices
+-- Ejemplo de optimización con FULLTEXT INDEX en descripciones de empleados
+ALTER TABLE empleados ADD COLUMN descripcion TEXT;
+CREATE FULLTEXT INDEX idx_descripcion ON empleados(descripcion);
+
+-- Consultar usando MATCH() AGAINST() en lugar de LIKE
+SELECT * FROM empleados WHERE MATCH(descripcion) AGAINST('experiencia en SQL');
+
+-- Optimización y reordenamiento de índices
 OPTIMIZE TABLE empleados;
 ANALYZE TABLE empleados;
 
--- Optimización de consultas con EXPLAIN
-EXPLAIN SELECT * FROM empleados WHERE nombre = 'Juan';
-
--- Ejemplo de uso de un índice normal
-SELECT * FROM empleados WHERE nombre = 'Pedro';
-
--- Ejemplo de búsqueda con FULLTEXT INDEX
-SELECT * FROM productos WHERE MATCH(descripcion) AGAINST('natural');
-SELECT * FROM productos WHERE MATCH(nombre, descripcion) AGAINST('jugo de naranja');
+-- Eliminar un índice si ya no es necesario
+DROP INDEX idx_apellido ON empleados;
