@@ -104,12 +104,3 @@ WHERE MATRICULA = 'A001';
 SELECT * FROM auditoria_vendedores;
 ```
 
----
-
-**Sugerencia Final:** Luego de realizar los ejercicios, revisa los triggers con:
-```sql
-SHOW TRIGGERS;
-```
-
-Así podrás confirmar que están activos y asociados correctamente a sus respectivas tablas.
-
