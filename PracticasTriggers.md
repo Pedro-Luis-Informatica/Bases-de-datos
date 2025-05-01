@@ -113,3 +113,4 @@ SHOW TRIGGERS;
 
 Así podrás confirmar que están activos y asociados correctamente a sus respectivas tablas.
 
+```
