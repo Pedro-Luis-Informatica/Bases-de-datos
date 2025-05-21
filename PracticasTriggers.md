@@ -1,115 +1,73 @@
-**Guía de Ejercicios Prácticos: Triggers en la Base de Datos `jugos_ventas`**
+# Guía de Ejercicios Prácticos: Auditoría de Precios de Productos
+
+**Objetivo:** Aplicar y entender el uso de triggers en auditoría de cambios de precios, mediante ejercicios prácticos en la base de datos `jugos_ventas`.
 
 ---
 
-**Objetivo:** Comprender el uso de los triggers en MySQL mediante la resolución de ejercicios prácticos sobre una base de datos real.
-
-**Base de datos:** `jugos_ventas`
-
-### Ejercicio 1: Verificación de Límite de Crédito
-
-**Trigger Relacionado:** `verificar_limite_credito`
+## Ejercicio 1: Verificación del Trigger de Auditoría de Precios
+**Trigger Relacionado:** `auditarPrecios`
 
 **Instrucciones:**
-1. Intenta insertar un cliente con un límite de crédito menor a 1000.
-2. Observa el mensaje de error.
-3. Luego, inserta un cliente con límite mayor o igual a 1000.
+1. Actualiza el precio de un producto existente en la tabla `tabla_de_productos`.
+2. Verifica que el cambio se haya registrado en la tabla `historial_de_precios`.
 
 **Consulta sugerida:**
 ```sql
-INSERT INTO tabla_de_clientes (DNI, NOMBRE, LIMITE_DE_CREDITO)
-VALUES ('99999999999', 'Cliente Test', 800);
-```
+UPDATE tabla_de_productos
+SET PRECIO_DE_LISTA = 6.75
+WHERE CODIGO_DEL_PRODUCTO = 'P001';
 
-### Ejercicio 2: Registro de Auditoría
-
-**Trigger Relacionado:** `auditar_clientes`
-
-**Instrucciones:**
-1. Actualiza el nombre de un cliente existente.
-2. Verifica que se haya registrado un cambio en la tabla `auditoria_clientes`.
-
-**Consulta sugerida:**
-```sql
-UPDATE tabla_de_clientes
-SET NOMBRE = 'Nuevo Nombre'
-WHERE DNI = '12345678900';
-
-SELECT * FROM auditoria_clientes;
-```
-
-### Ejercicio 3: Cálculo Automático del Total
-
-**Trigger Relacionado:** `calcular_total_factura`
-
-**Instrucciones:**
-1. Inserta una nueva factura.
-2. Añade productos con cantidades y precios.
-3. Verifica que la tabla `facturas_totales` tenga el total actualizado correctamente.
-
-**Consulta sugerida:**
-```sql
-INSERT INTO facturas (NUMERO, DNI, MATRICULA, FECHA_VENTA, IMPUESTO)
-VALUES (1001, '12345678900', 'A001', CURDATE(), 0.12);
-
-INSERT INTO items_facturas (NUMERO, CODIGO_DEL_PRODUCTO, CANTIDAD, PRECIO)
-VALUES (1001, 'P001', 2, 5.00);
-
-SELECT * FROM facturas_totales WHERE NUMERO = 1001;
-```
-
-### Ejercicio 4: Validación de Edad del Cliente
-
-**Trigger Relacionado:** `validar_edad_cliente`
-
-**Instrucciones:**
-1. Intenta insertar un cliente con edad < 18.
-2. Observa que la operación se cancela.
-3. Inserta otro cliente con edad válida.
-
-**Consulta sugerida:**
-```sql
-INSERT INTO tabla_de_clientes (DNI, NOMBRE, EDAD)
-VALUES ('88888888888', 'Menor de edad', 16);
-```
-
-### Ejercicio 5: Prevención de Precios Negativos
-
-**Trigger Relacionado:** `verificar_precio_producto`
-
-**Instrucciones:**
-1. Intenta insertar un producto con precio negativo.
-2. Verifica que se cancela la operación.
-
-**Consulta sugerida:**
-```sql
-INSERT INTO tabla_de_productos (CODIGO_DEL_PRODUCTO, NOMBRE_DEL_PRODUCTO, PRECIO_DE_LISTA)
-VALUES ('P999', 'Producto Inválido', -5);
-```
-
-### Ejercicio 6: Bitácora de Vendedores
-
-**Trigger Relacionado:** `auditar_vendedores`
-
-**Instrucciones:**
-1. Modifica el porcentaje de comisión de un vendedor.
-2. Consulta la tabla `auditoria_vendedores` para ver el cambio registrado.
-
-**Consulta sugerida:**
-```sql
-UPDATE tabla_de_vendedores
-SET PORCENTAJE_COMISION = 0.20
-WHERE MATRICULA = 'A001';
-
-SELECT * FROM auditoria_vendedores;
+SELECT * FROM historial_de_precios
+WHERE CODIGO_DEL_PRODUCTO = 'P001';
 ```
 
 ---
 
-**Sugerencia Final:** Luego de realizar los ejercicios, revisa los triggers con:
+## Ejercicio 2: Generación Automática de Mensajes del Sistema
+**Trigger Relacionado:** `auditarPrecios` (versión extendida con mensajes)
+
+**Instrucciones:**
+1. Cambia nuevamente el precio de un producto.
+2. Verifica que se haya generado un mensaje automático en la tabla `mensajes_sistema`.
+
+**Consulta sugerida:**
 ```sql
-SHOW TRIGGERS;
+UPDATE tabla_de_productos
+SET PRECIO_DE_LISTA = 7.50
+WHERE CODIGO_DEL_PRODUCTO = 'P001';
+
+SELECT * FROM mensajes_sistema
+ORDER BY fecha DESC
+LIMIT 5;
 ```
 
-Así podrás confirmar que están activos y asociados correctamente a sus respectivas tablas.
+---
 
+## Ejercicio 3: Validación de Funcionamiento del Trigger
+**Trigger Relacionado:** `auditarPrecios`
+
+**Instrucciones:**
+1. Ejecuta una actualización que **no cambia el precio** del producto.
+2. Verifica que **no se insertó un nuevo registro** en la tabla `historial_de_precios`.
+
+**Consulta sugerida:**
+```sql
+-- Suponiendo que el precio actual ya es 7.50
+UPDATE tabla_de_productos
+SET PRECIO_DE_LISTA = 7.50
+WHERE CODIGO_DEL_PRODUCTO = 'P001';
+
+-- Confirmar que no se generó una nueva fila
+SELECT * FROM historial_de_precios
+WHERE CODIGO_DEL_PRODUCTO = 'P001'
+ORDER BY fecha_cambio DESC;
+```
+
+---
+
+## Sugerencia Final
+Verifica que los triggers están activos con:
+
+```sql
+SHOW TRIGGERS FROM jugos_ventas;
+```
