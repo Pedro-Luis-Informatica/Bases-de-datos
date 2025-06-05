@@ -1,187 +1,121 @@
-# 📊 Ejercicios de Bases de Datos
+# 📘 Bases de Datos
 
-Bienvenido a esta colección de consultas SQL que te ayudarán a comprender el uso de **JOINS** en bases de datos relacionales. 🚀
+Bienvenidos al curso de **Bases de Datos**, diseñado para estudiantes de secundaria que desean introducirse en el fascinante mundo del almacenamiento, gestión y análisis de datos.
 
----
-
-## 👑 **Índice**
-1. [🔗 Los Joins](#-los-joins)
-   - [📋 Mostrar número de factura, fecha y producto](#-mostrar-número-de-factura-fecha-y-producto)
-   - [📋 Clientes con y sin facturas](#-clientes-con-y-sin-facturas)
-   - [📋 Facturas y vendedores](#-facturas-y-vendedores)
-   - [📋 Clientes y vendedores](#-clientes-y-vendedores)
-   - [📋 Total gastado por cliente](#-total-gastado-por-cliente)
-   - [📋 Productos vendidos y no vendidos](#-productos-vendidos-y-no-vendidos)
-   - [📋 Productos más vendidos](#-productos-más-vendidos)
-   - [📋 Productos nunca vendidos](#-productos-nunca-vendidos)
-   - [📋 Facturas con clientes](#-facturas-con-clientes)
-   - [📋 Facturas sin clientes](#-facturas-sin-clientes)
-   - [📋 Clientes sin compras](#-clientes-sin-compras)
-   - [📋 Facturas con total de compra](#-facturas-con-total-de-compra)
+Este repositorio contiene todos los materiales del curso organizados por trimestres, con teoría, ejercicios, presentaciones y recursos complementarios para un aprendizaje progresivo.
 
 ---
 
-## 🔗 **Los Joins**
+## 🧠 ¿Qué es una base de datos?
 
-### 📋 **Mostrar número de factura, fecha y producto**
-```sql
-SELECT 
-    f.numero, 
-    f.fecha_venta, 
-    p.nombre_producto AS producto
-FROM facturas f
-INNER JOIN items_facturas i ON f.numero = i.numero
-INNER JOIN productos p ON i.codigo_producto = p.codigo_producto;
-```
+Una **base de datos** es un sistema que permite almacenar, organizar y acceder a grandes volúmenes de información de forma eficiente. En la vida diaria están presentes en redes sociales, plataformas de streaming, supermercados, hospitales, etc.
 
 ---
 
-### 📋 **Clientes con y sin facturas**
-```sql
-SELECT 
-    c.nombre, 
-    c.ciudad, 
-    f.numero, 
-    f.fecha_venta
-FROM clientes c
-LEFT JOIN facturas f ON c.dni = f.dni;
-```
+## 🎯 Objetivos del curso
+
+- Comprender la estructura y funcionamiento de una base de datos.
+- Aprender a diseñar bases de datos con modelos conceptuales y relacionales.
+- Utilizar el lenguaje SQL para hacer consultas y manipular datos.
+- Desarrollar buenas prácticas de seguridad, optimización y automatización.
 
 ---
 
-### 📋 **Facturas y vendedores**
-```sql
-SELECT 
-    f.numero, 
-    f.fecha_venta, 
-    v.nombre AS vendedor, 
-    v.barrio
-FROM facturas f
-RIGHT JOIN vendedores v ON f.matricula = v.matricula;
-```
+## 🌍 ¿Por qué son importantes las bases de datos?
+
+Vivimos en la era de la información. Saber trabajar con datos es una habilidad fundamental para muchos campos: tecnología, ciencia, negocios, educación, etc. Las bases de datos son la columna vertebral de la mayoría de los sistemas digitales actuales.
 
 ---
 
-### 📋 **Clientes y vendedores**
-```sql
-SELECT 
-    c.nombre AS cliente, 
-    v.nombre AS vendedor, 
-    f.fecha_venta
-FROM clientes c
-INNER JOIN facturas f ON f.dni = c.dni
-LEFT JOIN vendedores v ON f.matricula = v.matricula;
-```
+## 🗃️ Tipos de Bases de Datos
+
+| Tipo | Descripción | Ejemplos |
+|------|-------------|----------|
+| Relacionales | Usan tablas para organizar los datos. | MySQL, PostgreSQL, SQLite |
+| No Relacionales (NoSQL) | Usan documentos, grafos o claves/valores. | MongoDB, Redis |
+| Distribuidas | Datos almacenados en varios servidores o ubicaciones. | Cassandra, Google Bigtable |
+| Jerárquicas y en red | Antiguos modelos que organizan los datos en estructuras tipo árbol o red. | IMS, CODASYL |
 
 ---
 
-### 📋 **Total gastado por cliente**
-```sql
-SELECT 
-    c.nombre AS cliente, 
-    v.nombre AS vendedor, 
-    f.numero AS numero_factura, 
-    f.fecha_venta, 
-    SUM(i.cantidad * i.precio) AS total_gastado
-FROM clientes c
-INNER JOIN facturas f ON f.dni = c.dni
-LEFT JOIN vendedores v ON f.matricula = v.matricula
-INNER JOIN items_facturas i ON f.numero = i.numero
-GROUP BY c.nombre, v.nombre, f.numero, f.fecha_venta
-ORDER BY total_gastado DESC;
-```
+## 📚 Temario del Curso
 
 ---
 
-### 📋 **Productos vendidos y no vendidos**
-```sql
-SELECT 
-    p.nombre_producto AS producto, 
-    i.numero AS factura
-FROM productos p
-RIGHT JOIN items_facturas i ON p.codigo_producto = i.codigo_producto;
-```
+### 🟦 1º Trimestre: Fundamentos y Modelado
+
+#### **Unidad 01: Almacenamiento de la información**
+- Concepto de información y datos.
+- Tipos de almacenamiento: físico y lógico.
+- Introducción al sistema gestor de bases de datos (SGBD).
+
+#### **Unidad 02: Modelo Entidad-Relación (E/R)**
+- Componentes: entidades, atributos y relaciones.
+- Diagramas E/R: símbolos y convenciones.
+- Participación, cardinalidad, claves primarias y foráneas.
+- Ejercicios prácticos de diseño E/R y E/R extendido.
+
+#### **Unidad 03: Del modelo conceptual al modelo relacional**
+- Reglas de transformación E/R → modelo relacional.
+- Normalización de esquemas.
+- Esquemas resumen: paso a paso para el diseño relacional.
 
 ---
 
-### 📋 **Productos más vendidos**
-```sql
-SELECT 
-    p.codigo_producto, 
-    p.nombre_producto,
-    p.tamano,
-    p.sabor,
-    SUM(i.cantidad) AS total_vendido
-FROM productos p
-INNER JOIN items_facturas i ON p.codigo_producto = i.codigo_producto
-GROUP BY p.codigo_producto, p.nombre_producto, p.tamano, p.sabor
-ORDER BY total_vendido DESC;
-```
+### 🟨 2º Trimestre: Lenguaje SQL - Consultas
+
+#### **Unidad 05: Consultas sobre una sola tabla**
+- Introducción al lenguaje SQL.
+- Comando `SELECT`: proyecciones y condiciones.
+- Uso de operadores lógicos y de comparación.
+
+#### **Unidad 06: Consultas sobre varias tablas (Composición interna y cruzada)**
+- Joins: INNER JOIN, CROSS JOIN.
+- Claves primarias y foráneas como enlaces entre tablas.
+
+#### **Unidad 07: Consultas sobre varias tablas (Composición externa)**
+- OUTER JOIN: LEFT, RIGHT, FULL.
+- Manejo de valores nulos.
+
+#### **Unidad 08: Consultas resumen**
+- Agregación de datos: `COUNT()`, `SUM()`, `AVG()`, `MAX()`, `MIN()`.
+- Agrupamiento: `GROUP BY`, `HAVING`.
+
+#### **Unidad 09: Subconsultas**
+- Subconsultas en cláusulas `WHERE`, `FROM` y `SELECT`.
+- Comparaciones con `IN`, `EXISTS`, `ANY`, `ALL`.
+- Ejercicios combinados de teoría y práctica.
 
 ---
 
-### 📋 **Productos nunca vendidos**
-```sql
-SELECT 
-    p.codigo_producto, 
-    p.nombre_producto,
-    p.tamano,
-    p.sabor
-FROM productos p
-LEFT JOIN items_facturas i ON p.codigo_producto = i.codigo_producto
-WHERE i.codigo_producto IS NULL;
-```
+### 🟩 3º Trimestre: Avanzado, Seguridad y Automatización
 
----
+#### **Unidad: Vistas**
+- Concepto y utilidad de las vistas (`CREATE VIEW`).
+- Ventajas: simplificación, seguridad y reutilización.
 
-### 📋 **Facturas con clientes**
-```sql
-SELECT 
-    f.numero, 
-    f.fecha_venta, 
-    c.nombre AS cliente
-FROM facturas f
-INNER JOIN clientes c ON f.dni = c.dni;
-```
+#### **Unidad 10: Optimización de consultas**
+- Análisis de rendimiento.
+- Buenas prácticas para consultas eficientes.
+- Índices y estadísticas.
 
----
+#### **Unidad 11: Manipulación de datos**
+- Comandos: `INSERT`, `UPDATE`, `DELETE`.
+- Transacciones y control de errores.
 
-### 📋 **Facturas sin clientes**
-```sql
-SELECT 
-    f.numero, 
-    f.fecha_venta, 
-    c.nombre AS cliente
-FROM facturas f
-LEFT JOIN clientes c ON f.dni = c.dni
-WHERE c.nombre IS NULL;
-```
+#### **Unidad: Lenguaje de Control de Datos**
+- Control de accesos: `GRANT`, `REVOKE`.
+- Roles y privilegios.
+- Auditoría y registro de cambios.
 
----
+#### **Unidad 12: Programación en bases de datos**
+- Triggers (disparadores): cuándo y cómo usarlos.
+- Procedimientos almacenados (`PROCEDURE`) y funciones (`FUNCTION`).
+- Automatización de tareas y validación de datos.
 
-### 📋 **Clientes sin compras**
-```sql
-SELECT 
-    c.nombre, 
-    f.numero
-FROM facturas f
-RIGHT JOIN clientes c ON f.dni = c.dni
-WHERE f.numero IS NULL;
-```
-
----
-
-### 📋 **Facturas con total de compra**
-```sql
-SELECT 
-    f.numero, 
-    f.fecha_venta, 
-    c.nombre AS cliente,
-    SUM(i.cantidad * i.precio) AS total_factura
-FROM facturas f
-INNER JOIN clientes c ON f.dni = c.dni
-INNER JOIN items_facturas i ON f.numero = i.numero
-GROUP BY f.numero, f.fecha_venta, c.nombre;
-```
+#### **Unidad 13: Seguridad de los datos**
+- Cifrado, integridad y copias de seguridad.
+- Protección contra accesos no autorizados.
+- Políticas de respaldo y recuperación.
 
 ---
