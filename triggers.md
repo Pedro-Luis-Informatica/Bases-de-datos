@@ -1,6 +1,6 @@
-# Guía Completa de Triggers en MySQL #
+# Guía Completa de Triggers en MySQL 
 
-## ¿Qué es un Trigger? ##
+## ¿Qué es un Trigger? 
 
 Un **trigger** (o disparador) es un objeto de la base de datos que se asocia a una tabla y se activa automáticamente cuando ocurre un evento determinado (INSERT, UPDATE o DELETE).
 
