@@ -1,132 +1,125 @@
--- ==========================================
--- CREACIÓN DE TABLAS AUXILIARES PARA TRIGGERS
--- ==========================================
+# Guía Completa de Triggers en MySQL
 
--- Tabla para almacenar el total de las facturas
-CREATE TABLE IF NOT EXISTS total_facturas (
-    NUMERO INT PRIMARY KEY,
-    TOTAL FLOAT DEFAULT 0
-);
+## ¿Qué es un Trigger?
 
--- Tabla para historial de precios
-CREATE TABLE IF NOT EXISTS historial_precios (
+Un **trigger** (o disparador) es un objeto de la base de datos que se asocia a una tabla y se activa automáticamente cuando ocurre un evento determinado (INSERT, UPDATE o DELETE).
+
+### Sintaxis básica
+
+```sql
+CREATE TRIGGER nombre_trigger
+[BEFORE | AFTER] [INSERT | UPDATE | DELETE]
+ON nombre_tabla
+FOR EACH ROW
+BEGIN
+   -- Sentencias SQL
+END;
+```
+
+---
+
+## ¿Cuándo se usan los Triggers?
+
+Los triggers se usan para:
+- Validar datos antes de que sean insertados o actualizados.
+- Auditar cambios en las tablas.
+- Automatizar acciones relacionadas (por ejemplo, registrar una modificación en otra tabla).
+- Prevenir operaciones que violen las reglas del negocio.
+
+---
+
+## Tipos de Triggers
+
+| Evento      | BEFORE o AFTER | Uso típico                            |
+|-------------|----------------|----------------------------------------|
+| INSERT      | BEFORE          | Validación de datos                   |
+| INSERT      | AFTER           | Auditoría, notificaciones             |
+| UPDATE      | BEFORE          | Prevención de cambios no permitidos   |
+| UPDATE      | AFTER           | Registro de cambios, cálculos         |
+| DELETE      | BEFORE          | Prevención de borrado                 |
+| DELETE      | AFTER           | Auditoría de eliminación              |
+
+---
+
+## Variables OLD y NEW
+
+En los triggers `UPDATE` y `DELETE` puedes acceder a los valores previos (`OLD`). En `INSERT` y `UPDATE` puedes acceder a los nuevos valores (`NEW`).
+
+```sql
+-- Ejemplo en trigger BEFORE UPDATE
+IF OLD.precio <> NEW.precio THEN
+   -- código
+END IF;
+```
+
+---
+
+## Ejemplo 1: Auditoría de cambios
+
+```sql
+CREATE TABLE auditoria_precios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    CODIGO_DEL_PRODUCTO VARCHAR(10),
-    PRECIO_ANTERIOR FLOAT,
-    PRECIO_NUEVO FLOAT,
-    FECHA_CAMBIO DATETIME
+    producto_id INT,
+    precio_anterior DECIMAL(10,2),
+    precio_nuevo DECIMAL(10,2),
+    fecha DATETIME DEFAULT NOW()
 );
 
--- ==========================================
--- TRIGGER 1: Calcular total de factura después de insertar ítems
--- ==========================================
-DELIMITER $$
-CREATE TRIGGER calcular_total_factura
-AFTER INSERT ON items_facturas
+CREATE TRIGGER auditar_precio
+AFTER UPDATE ON productos
 FOR EACH ROW
 BEGIN
-    IF EXISTS (SELECT 1 FROM total_facturas WHERE NUMERO = NEW.NUMERO) THEN
-        UPDATE total_facturas
-        SET TOTAL = TOTAL + (NEW.CANTIDAD * NEW.PRECIO)
-        WHERE NUMERO = NEW.NUMERO;
-    ELSE
-        INSERT INTO total_facturas (NUMERO, TOTAL)
-        VALUES (NEW.NUMERO, NEW.CANTIDAD * NEW.PRECIO);
-    END IF;
-END$$
-DELIMITER ;
+  IF OLD.precio <> NEW.precio THEN
+    INSERT INTO auditoria_precios (producto_id, precio_anterior, precio_nuevo)
+    VALUES (OLD.id, OLD.precio, NEW.precio);
+  END IF;
+END;
+```
 
--- ==========================================
--- TRIGGER 2: Validar crédito del cliente antes de insertar factura
--- ==========================================
-DELIMITER $$
-CREATE TRIGGER validar_credito
-BEFORE INSERT ON facturas
+---
+
+## Ejemplo 2: Evitar precio negativo
+
+```sql
+CREATE TRIGGER validar_precio
+BEFORE INSERT ON productos
 FOR EACH ROW
 BEGIN
-    DECLARE limite FLOAT;
+  IF NEW.precio < 0 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'El precio no puede ser negativo.';
+  END IF;
+END;
+```
 
-    SELECT LIMITE_DE_CREDITO INTO limite
-    FROM tabla_de_clientes
-    WHERE DNI = NEW.DNI;
+---
 
-    IF limite < NEW.IMPUESTO THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Crédito insuficiente para registrar la factura';
-    END IF;
-END$$
-DELIMITER ;
+## Tips y Buenas Prácticas
 
--- ==========================================
--- TRIGGER 3: Auditar cambios de precios en productos
--- ==========================================
-DELIMITER $$
-CREATE TRIGGER auditar_precios
-BEFORE UPDATE ON tabla_de_productos
-FOR EACH ROW
-BEGIN
-    IF OLD.PRECIO_DE_LISTA != NEW.PRECIO_DE_LISTA THEN
-        INSERT INTO historial_precios (CODIGO_DEL_PRODUCTO, PRECIO_ANTERIOR, PRECIO_NUEVO, FECHA_CAMBIO)
-        VALUES (OLD.CODIGO_DEL_PRODUCTO, OLD.PRECIO_DE_LISTA, NEW.PRECIO_DE_LISTA, NOW());
-    END IF;
-END$$
-DELIMITER ;
+✅ Usa triggers para **acciones automáticas necesarias**, no para lógica de aplicación.  
+✅ Mantén los triggers **simples y claros**.  
+✅ Evita usar triggers que se llaman entre sí (puede causar loops).  
+✅ Asegúrate de que el trigger **no impacte negativamente el rendimiento**.  
+✅ Documenta lo que hace cada trigger (nombre descriptivo y comentarios).  
+✅ Verifica los triggers con `SHOW TRIGGERS`.
 
--- ==========================================
--- TRIGGER 4: Calcular automáticamente la edad del cliente
--- ==========================================
-DELIMITER $$
-CREATE TRIGGER calcular_edad_insert
-BEFORE INSERT ON tabla_de_clientes
-FOR EACH ROW
-BEGIN
-    SET NEW.EDAD = TIMESTAMPDIFF(YEAR, NEW.FECHA_DE_NACIMIENTO, CURDATE());
-END$$
-DELIMITER ;
+---
 
-DELIMITER $$
-CREATE TRIGGER calcular_edad_update
-BEFORE UPDATE ON tabla_de_clientes
-FOR EACH ROW
-BEGIN
-    SET NEW.EDAD = TIMESTAMPDIFF(YEAR, NEW.FECHA_DE_NACIMIENTO, CURDATE());
-END$$
-DELIMITER ;
+## Ver y eliminar triggers
 
--- ==========================================
--- TRIGGER 5: Registrar auditoría de facturas eliminadas
--- ==========================================
-CREATE TABLE IF NOT EXISTS auditoria_facturas (
-    numero INT,
-    dni VARCHAR(11),
-    fecha_venta DATE,
-    eliminado_en DATETIME
-);
+```sql
+-- Ver triggers existentes
+SHOW TRIGGERS;
 
-DELIMITER $$
-CREATE TRIGGER auditar_eliminacion_factura
-BEFORE DELETE ON facturas
-FOR EACH ROW
-BEGIN
-    INSERT INTO auditoria_facturas (numero, dni, fecha_venta, eliminado_en)
-    VALUES (OLD.NUMERO, OLD.DNI, OLD.FECHA_VENTA, NOW());
-END$$
-DELIMITER ;
+-- Eliminar un trigger
+DROP TRIGGER IF EXISTS nombre_trigger;
+```
 
--- ==========================================
--- TRIGGER 6: Notificar si se inserta un producto duplicado (solo simulado)
--- ==========================================
-DELIMITER $$
-CREATE TRIGGER evitar_producto_duplicado
-BEFORE INSERT ON tabla_de_productos
-FOR EACH ROW
-BEGIN
-    IF EXISTS (
-        SELECT 1 FROM tabla_de_productos WHERE CODIGO_DEL_PRODUCTO = NEW.CODIGO_DEL_PRODUCTO
-    ) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'El producto ya existe.';
-    END IF;
-END$$
-DELIMITER ;
+---
+
+## Recursos útiles
+
+- [MySQL CREATE TRIGGER Documentation](https://dev.mysql.com/doc/refman/8.0/en/trigger-syntax.html)
+
+---
 
