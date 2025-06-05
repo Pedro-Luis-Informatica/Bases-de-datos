@@ -1,73 +1,57 @@
-# Guía de Ejercicios Prácticos: Auditoría de Precios de Productos
+### Base de Datos UniversidadTipoA
+---
 
-**Objetivo:** Aplicar y entender el uso de triggers en auditoría de cambios de precios, mediante ejercicios prácticos en la base de datos `jugos_ventas`.
+## Ejercicios Prácticos sobre Triggers
+
+### Ejercicio 1: Validar sexo
+
+Asegurar que solo se inserten los valores 'H' o 'M' en el campo `sexo` de la tabla `persona`.
+Crea un trigger que impida insertar otros valores diferentes de 'H' o 'M'.
+
+### Ejercicio 2: Auditar cambios en asignaturas
+
+Registrar los cambios de créditos en una tabla de auditoría.
+Crea una tabla `auditoria_creditos` y un trigger que registre cuando se actualiza el número de créditos de una asignatura.
+
+### Ejercicio 3: Prevenir eliminación de departamentos con profesores
+
+Evitar que se elimine un departamento que tenga profesores asociados.
+Crea un trigger que bloquee la eliminación si existen registros en `profesor` relacionados con el departamento.
+
+### Ejercicio 4: Validar límite de asignaturas por alumno
+
+Asegurar que un alumno no se matricule en más de 6 asignaturas por curso escolar.
+Crea un trigger que impida una nueva matrícula si ya hay 6 asignaturas para ese alumno en ese curso.
+
+### Ejercicio 5: Registrar fecha de inscripción automáticamente
+
+Insertar la fecha actual como fecha de inscripción en `alumno_se_matricula_asignatura` si no se proporciona.
+Modifica la tabla para permitir un campo `fecha_inscripcion` y crea un trigger que lo actualice automáticamente con `CURDATE()` si no se proporciona.
+
+### Ejercicio 6: Auditar altas en `persona`
+
+Registrar todas las inserciones en `persona` en una tabla de auditoría.
+Crea una tabla `auditoria_persona` y un trigger `AFTER INSERT` que almacene los datos insertados.
+
+### Ejercicio 7: Notificación de nuevos profesores
+
+Registrar un mensaje en una tabla `notificaciones` cuando se registre un nuevo profesor.
+Crea la tabla `notificaciones` y un trigger que inserte un mensaje cuando se agregue un nuevo `profesor`.
+
+### Ejercicio 8: Bloquear cambios de tipo en `persona`
+
+Impedir que se cambie el tipo de una persona (de alumno a profesor o viceversa).
+Crea un trigger `BEFORE UPDATE` en `persona` que impida cambiar el campo `tipo`.
+
+### Ejercicio 9: Asegurar que todos los profesores estén asignados a un departamento
+
+Validar en inserciones que cada profesor tenga un `id_departamento` válido.
+Crea un trigger `BEFORE INSERT` en `profesor` que verifique la existencia del departamento.
+
+### Ejercicio 10: Validar duración del curso escolar
+
+Asegurar que la diferencia entre `anyo_inicio` y `anyo_fin` sea exactamente 1 año.
+Crea un trigger `BEFORE INSERT` en `curso_escolar` que valide esta condición.
 
 ---
 
-## Ejercicio 1: Verificación del Trigger de Auditoría de Precios
-**Trigger Relacionado:** `auditarPrecios`
-
-**Instrucciones:**
-1. Actualiza el precio de un producto existente en la tabla `tabla_de_productos`.
-2. Verifica que el cambio se haya registrado en la tabla `historial_de_precios`.
-
-**Consulta sugerida:**
-```sql
-UPDATE tabla_de_productos
-SET PRECIO_DE_LISTA = 6.75
-WHERE CODIGO_DEL_PRODUCTO = 'P001';
-
-SELECT * FROM historial_de_precios
-WHERE CODIGO_DEL_PRODUCTO = 'P001';
-```
-
----
-
-## Ejercicio 2: Generación Automática de Mensajes del Sistema
-**Trigger Relacionado:** `auditarPrecios` (versión extendida con mensajes)
-
-**Instrucciones:**
-1. Cambia nuevamente el precio de un producto.
-2. Verifica que se haya generado un mensaje automático en la tabla `mensajes_sistema`.
-
-**Consulta sugerida:**
-```sql
-UPDATE tabla_de_productos
-SET PRECIO_DE_LISTA = 7.50
-WHERE CODIGO_DEL_PRODUCTO = 'P001';
-
-SELECT * FROM mensajes_sistema
-ORDER BY fecha DESC
-LIMIT 5;
-```
-
----
-
-## Ejercicio 3: Validación de Funcionamiento del Trigger
-**Trigger Relacionado:** `auditarPrecios`
-
-**Instrucciones:**
-1. Ejecuta una actualización que **no cambia el precio** del producto.
-2. Verifica que **no se insertó un nuevo registro** en la tabla `historial_de_precios`.
-
-**Consulta sugerida:**
-```sql
--- Suponiendo que el precio actual ya es 7.50
-UPDATE tabla_de_productos
-SET PRECIO_DE_LISTA = 7.50
-WHERE CODIGO_DEL_PRODUCTO = 'P001';
-
--- Confirmar que no se generó una nueva fila
-SELECT * FROM historial_de_precios
-WHERE CODIGO_DEL_PRODUCTO = 'P001'
-ORDER BY fecha_cambio DESC;
-```
-
----
-
-## Sugerencia Final
-Verifica que los triggers están activos con:
-
-```sql
-SHOW TRIGGERS FROM jugos_ventas;
-```
