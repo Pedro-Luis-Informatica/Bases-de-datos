@@ -1,9 +1,5 @@
 # 📘 Bases de Datos
 
-Bienvenidos al curso de **Bases de Datos**, diseñado para estudiantes de secundaria que desean introducirse en el fascinante mundo del almacenamiento, gestión y análisis de datos.
-
-Este repositorio contiene todos los materiales del curso organizados por trimestres, con teoría, ejercicios, presentaciones y recursos complementarios para un aprendizaje progresivo.
-
 ---
 
 ## 🧠 ¿Qué es una base de datos?
@@ -119,3 +115,4 @@ Vivimos en la era de la información. Saber trabajar con datos es una habilidad 
 - Políticas de respaldo y recuperación.
 
 ---
+
