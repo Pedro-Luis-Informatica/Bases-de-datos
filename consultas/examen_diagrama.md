@@ -1,4 +1,4 @@
-# 🚀 Guía de Ejercicios: Lógica de Programación
+# 🚀 Ejercicios: Lógica de Programación
 
 Este repositorio contiene 23 retos de lógica diseñados para estudiantes de **5to de Secundaria**. El objetivo es dominar las estructuras **secuenciales** y **condicionales anidadas** antes de avanzar a estructuras cíclicas.
 
