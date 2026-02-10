@@ -48,7 +48,7 @@
 | **6** | **80/80** | ✅ Sí | **Perfecto.** Exclusión lógica y límites bien aplicados. |
 | **7** | **0/80** | ❌ No | Sin respuesta. |
 | **8** | **65/80** | ❌ No | Error en la dirección del ordenamiento (`DESC` ausente en precio). |
-| **9** | **55/80** | ❌ No | Al omitir el `OFFSET`, no se cumple la paginación solicitada. |
+| **9** | **55/80** | ✅ Sí | **Perfecto.** |
 | **10** | **60/80** | ❌ No | Datos correctos, pero el orden es aleatorio (falta `ORDER BY`). |
 | **11** | **0/80** | ❌ No | Sin respuesta. |
 | **12** | **0/80** | ❌ No | Sin respuesta. |
