@@ -33,3 +33,37 @@
 | **25** | **Rango Preciso y Envase**<br>Precio 16-16.02 OR envase 'Botella PET'. Orden precio asc, envase desc. | `OR` `BETWEEN` `ORDER BY` |
 
 ---
+
+# 📈 Reporte de Calificaciones: Evaluación de SQL
+
+---
+
+| Pregunta | Promedio Final | ¿Resultado OK? | Observaciones Consolidadas |
+| :--- | :---: | :---: | :--- |
+| **1** | **60/80** | ❌ No | Falta de paréntesis en `OR` altera la lógica; `GROUP BY` innecesario. |
+| **2** | **70/80** | ❌ No | El resultado es casi correcto, pero falta el ordenamiento secundario. |
+| **3** | **80/80** | ✅ Sí | **Perfecto.** Uso correcto de `DISTINCT`, filtros y orden. |
+| **4** | **80/80** | ✅ Sí | **Perfecto.** Manejo de `LIKE`, `AND` y límites sin errores. |
+| **5** | **50/80** | ❌ No | Omisión de la condición `primera_compra`; entrega datos de más. |
+| **6** | **80/80** | ✅ Sí | **Perfecto.** Exclusión lógica y límites bien aplicados. |
+| **7** | **0/80** | ❌ No | Sin respuesta. |
+| **8** | **65/80** | ❌ No | Error en la dirección del ordenamiento (`DESC` ausente en precio). |
+| **9** | **55/80** | ❌ No | Al omitir el `OFFSET`, no se cumple la paginación solicitada. |
+| **10** | **60/80** | ❌ No | Datos correctos, pero el orden es aleatorio (falta `ORDER BY`). |
+| **11** | **0/80** | ❌ No | Sin respuesta. |
+| **12** | **0/80** | ❌ No | Sin respuesta. |
+| **13** | **45/80** | ❌ No | Selección de campos incorrecta y falta de orden descendente. |
+| **14** | **80/80** | ✅ Sí | **Perfecto.** Aplicación exacta de filtros y límites. |
+| **15** | **0/80** | ❌ No | Sin respuesta. |
+| **16** | **30/80** | ❌ No | Error conceptual: uso de `BETWEEN` numérico en columnas de texto. |
+| **17** | **55/80** | ❌ No | Ausencia de `ALIAS` y lógica de compra dudosa. |
+| **18** | **40/80** | ❌ No | Sintaxis de negación rota (`OR` mal aplicado) y valores de filtro erróneos. |
+| **19** | **60/80** | ❌ No | El uso de `IN` no reemplaza al patrón `LIKE`; falta el `OFFSET`. |
+| **20** | **70/80** | ✅ Sí | Funciona por prioridad natural de operadores, pero requiere paréntesis. |
+| **21** | **35/80** | ❌ No | Error de mapeo: se buscó en la columna `nombre` en lugar de `sabor`. |
+| **22** | **45/80** | ❌ No | Resultado incompleto por falta de iniciales y ordenamiento. |
+| **23** | **70/80** | ✅ Sí | Lógica funcional. Se recomienda agrupar condiciones para mayor legibilidad. |
+| **24** | **0/80** | ❌ No | Sin respuesta. |
+| **25** | **0/80** | ❌ No | Sin respuesta. |
+
+---
