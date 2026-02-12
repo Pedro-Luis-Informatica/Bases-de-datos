@@ -1,6 +1,6 @@
 # 🚀 Ejercicios de Práctica SQL
 
-Repositorio de ejercicios diseñados para practicar consultas avanzadas en SQL, cubriendo filtros, agrupaciones, alias y lógica compleja.
+---
 
 | Ejercicio | Mandato (Descripción) |
 | :--- | :--- |
