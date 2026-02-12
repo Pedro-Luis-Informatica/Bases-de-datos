@@ -38,17 +38,17 @@
 
 | # | Puntaje | ¿Logra el resultado? | Observaciones Técnicas | Respuesta Correcta (SQL) |
 | :--- | :---: | :--- | :--- | :--- |
-| **1** | 60/80 | ❌ No | Paréntesis faltantes en condiciones `OR` alteran la lógica. | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE CIUDAD IN ('Ciudad de México', 'Guadalajara') AND EDAD BETWEEN 20 AND 30 ORDER BY EDAD ASC LIMIT 10;` |
+| **1** | 70/80 | ❌ No | Paréntesis faltantes en condiciones `OR` alteran la lógica. | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE CIUDAD IN ('Ciudad de México', 'Guadalajara') AND EDAD BETWEEN 20 AND 30 ORDER BY EDAD ASC LIMIT 10;` |
 | **2** | 70/80 | ❌ No | Falta ordenamiento completo (`precio DESC`, `nombre`). | `SELECT nombre_del_producto, sabor, precio_de_lista FROM tabla_de_productos WHERE (sabor = 'Mango' OR sabor = 'Uva') AND precio_de_lista BETWEEN 16 AND 17 ORDER BY precio_de_lista DESC, nombre_del_producto;` |
 | **3** | 80/80 | ✅ Sí | Uso correcto de `DISTINCT` y filtros. | `SELECT DISTINCT Envase, Tamano FROM tabla_de_productos WHERE sabor = 'Naranja' ORDER BY envase, tamano;` |
 | **4** | 80/80 | ✅ Sí | Aplicación precisa de `LIKE` y `LIMIT`. | `SELECT nombre_del_producto, sabor, envase, precio_de_lista FROM tabla_de_productos WHERE sabor LIKE '%manzana%' AND envase = 'Botella PET' ORDER BY precio_de_lista LIMIT 8;` |
 | **5** | 40/80 | ❌ No | Falta condición de `primera_compra`. | `SELECT dni AS identificacion, nombre AS cliente FROM tabla_de_clientes WHERE volumen_de_compra > 2000 AND primera_compra = 1 ORDER BY nombre;` |
 | **6** | 80/80 | ✅ Sí | Exclusión lógica y límites bien aplicados. | `SELECT nombre_del_producto, sabor, tamano FROM tabla_de_productos WHERE NOT (sabor = 'Mango' AND tamano = '470 ml') ORDER BY sabor LIMIT 12;` |
 | **7** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_clientes WHERE ciudad = 'Ciudad de México' AND edad > 21 AND primera_compra = 0 ORDER BY edad DESC;` |
-| **8** | 60/80 | ❌ No | Falta `DESC` en el criterio de precio. | `SELECT nombre_del_producto, sabor, tamano, precio_de_lista FROM tabla_de_productos WHERE sabor = 'Mango' AND tamano != '470 ml' AND precio_de_lista > 16 ORDER BY precio_de_lista DESC, tamano;` |
-| **9** | 70/80 | ❌ No | Sin `ORDER BY DESC` completo y preciso. | `SELECT * FROM tabla_de_productos ORDER BY nombre_del_producto DESC LIMIT 4 OFFSET 4;` |
-| **10** | 60/80 | ❌ No | Sin `ORDER BY`, el resultado es inconsistente. | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE NOMBRE LIKE 'M%' AND VOLUMEN_DE_COMPRA BETWEEN 1000 AND 3000 ORDER BY NOMBRE;` |
-| **11** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_productos ORDER BY envase DESC, nombre_del_producto ASC;` |
+| **8** | 70/80 | ❌ No | Falta `DESC` en el criterio de precio. | `SELECT nombre_del_producto, sabor, tamano, precio_de_lista FROM tabla_de_productos WHERE sabor = 'Mango' AND tamano != '470 ml' AND precio_de_lista > 16 ORDER BY precio_de_lista DESC, tamano;` |
+| **9** | 80/80 | ✅ Sí | Sin `ORDER BY DESC` completo y preciso. | `SELECT * FROM tabla_de_productos ORDER BY nombre_del_producto DESC LIMIT 4 OFFSET 4;` |
+| **10** | 70/80 | ❌ No | Sin `ORDER BY`, el resultado es inconsistente. | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE NOMBRE LIKE 'M%' AND VOLUMEN_DE_COMPRA BETWEEN 1000 AND 3000 ORDER BY NOMBRE;` |
+| **11** | 70/80 | ✅ Sí | No respondida. | `SELECT * FROM tabla_de_productos ORDER BY envase DESC, nombre_del_producto ASC;` |
 | **12** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_productos WHERE NOT (sabor = 'Mango') OR tamano = '470 ml' ORDER BY sabor ASC, precio_de_lista DESC;` |
 | **13** | 40/80 | ❌ No | Campos seleccionados no coinciden con la solicitud. | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE ciudad = 'Guadalajara' AND edad BETWEEN 20 AND 25 ORDER BY limite_de_credito DESC LIMIT 10;` |
 | **14** | 80/80 | ✅ Sí | Filtros de precio y envase correctos. | `SELECT nombre_del_producto, precio_de_lista, envase FROM tabla_de_productos WHERE precio_de_lista <= 17 AND envase = 'Botella PET' ORDER BY precio_de_lista LIMIT 7;` |
@@ -57,10 +57,10 @@
 | **17** | 50/80 | ❌ No | Falta alias y lógica de compra incorrecta. | `SELECT dni AS identificacion, nombre AS cliente FROM tabla_de_clientes WHERE (primera_compra = 1 OR volumen_de_compra > 2500) AND edad BETWEEN 25 AND 40 ORDER BY nombre;` |
 | **18** | 30/80 | ❌ No | Sintaxis `OR` rota y valores de filtro erróneos. | `SELECT * FROM tabla_de_productos WHERE sabor NOT IN ('Mango', 'Uva') AND precio_de_lista > 15 AND envase != 'Botella PET' ORDER BY precio_de_lista DESC;` |
 | **19** | 50/80 | ❌ No | `IN` no detecta patrones como `LIKE`. | `SELECT * FROM tabla_de_productos WHERE sabor LIKE '%naran%' OR sabor LIKE '%limón%' ORDER BY envase, precio_de_lista DESC LIMIT 5 OFFSET 10;` |
-| **20** | 70/80 | ✅ Sí | Lógica funcional (aunque requiere paréntesis). | `SELECT nombre, edad, volumen_de_compra FROM tabla_de_clientes WHERE (edad < 25 AND volumen_de_compra > 2000) OR (edad >= 25 AND volumen_de_compra > 1500) ORDER BY edad, volumen_de_compra;` |
+| **20** | 80/80 | ✅ Sí | Lógica funcional (aunque requiere paréntesis). | `SELECT nombre, edad, volumen_de_compra FROM tabla_de_clientes WHERE (edad < 25 AND volumen_de_compra > 2000) OR (edad >= 25 AND volumen_de_compra > 1500) ORDER BY edad, volumen_de_compra;` |
 | **21** | 30/80 | ❌ No | Columna de búsqueda incorrecta (nombre vs sabor). | `SELECT * FROM tabla_de_productos WHERE (sabor LIKE '%jugo%' OR sabor LIKE '%refresco%') AND precio_de_lista BETWEEN 12 AND 20 AND envase != 'Botella PET' ORDER BY precio_de_lista DESC;` |
 | **22** | 40/80 | ❌ No | Filtro de iniciales incompleto (solo 'A'). | `SELECT DNI, NOMBRE FROM tabla_de_clientes WHERE (NOMBRE LIKE 'A%' OR NOMBRE LIKE 'M%' OR NOMBRE LIKE 'J%') AND LIMITE_DE_CREDITO > 30000 ORDER BY NOMBRE;` |
-| **23** | 70/80 | ✅ Sí | Lógica funcional bajo prioridad natural. | `SELECT * FROM tabla_de_productos WHERE (sabor = 'Mango' AND precio_de_lista > 16) OR (sabor = 'Uva' AND precio_de_lista <= 17) ORDER BY sabor, precio_de_lista;` |
+| **23** | 80/80 | ✅ Sí | Lógica funcional bajo prioridad natural. | `SELECT * FROM tabla_de_productos WHERE (sabor = 'Mango' AND precio_de_lista > 16) OR (sabor = 'Uva' AND precio_de_lista <= 17) ORDER BY sabor, precio_de_lista;` |
 | **24** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_clientes WHERE ciudad != 'Ciudad de México' AND (limite_de_credito > 40000 OR volumen_de_compra > 2000);` |
 | **25** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_productos WHERE precio_de_lista BETWEEN 16 AND 16.02 OR envase = 'Botella PET' ORDER BY precio_de_lista ASC, envase DESC;` |
 
