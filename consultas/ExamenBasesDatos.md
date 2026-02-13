@@ -44,7 +44,7 @@
 | **4** | 80/80 | ✅ Sí | Aplicación precisa de `LIKE` y `LIMIT`. | `SELECT nombre_del_producto, sabor, envase, precio_de_lista FROM tabla_de_productos WHERE sabor LIKE '%manzana%' AND envase = 'Botella PET' ORDER BY precio_de_lista LIMIT 8;` |
 | **5** | 70/80 | ✅ Sí | |
 | **6** | 80/80 | ✅ Sí | Exclusión lógica y límites bien aplicados. | `SELECT nombre_del_producto, sabor, tamano FROM tabla_de_productos WHERE NOT (sabor = 'Mango' AND tamano = '470 ml') ORDER BY sabor LIMIT 12;` |
-| **7** | 0/80 | ❌ No | No respondida. | `SELECT * FROM tabla_de_clientes WHERE ciudad = 'Ciudad de México' AND edad > 21 AND primera_compra = 0 ORDER BY edad DESC;` |
+| **7** | 68/80 | ✅ Sí |  |
 | **8** | 70/80 |  ✅ Sí | Falta `DESC` en el criterio de precio. | `SELECT nombre_del_producto, sabor, tamano, precio_de_lista FROM tabla_de_productos WHERE sabor = 'Mango' AND tamano != '470 ml' AND precio_de_lista > 16 ORDER BY precio_de_lista DESC, tamano;` |
 | **9** | 80/80 | ✅ Sí | Sin `ORDER BY DESC` completo y preciso. | `SELECT * FROM tabla_de_productos ORDER BY nombre_del_producto DESC LIMIT 4 OFFSET 4;` |
 | **10** | 70/80 | ✅ Sí |  |
