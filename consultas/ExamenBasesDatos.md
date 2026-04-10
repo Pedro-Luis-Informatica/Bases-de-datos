@@ -4,7 +4,7 @@
 | :--- | :--- | :--- |
 | **01** | **Ej 1:** Recibe un año y devuelve el vendedor con más ventas (Extra). | **Ej 2:** Recibe un envase y devuelve el nombre del producto más caro. |
 | **02** | **Ej 3:** Recibe un sabor y devuelve el precio promedio de esos productos. | **Ej 4:** Recibe un barrio y devuelve el conteo de clientes que residen allí. |
-| **03** | **Ej 5:** Recibe vendedor y devuelve su promedio de ventas por factura. | **Ej 6:** Recibe DNI cliente y devuelve su gasto promedio por factura. |
+| **03** | **Ej 37:** Recibe una fecha y devuelve el total de ventas de ese día. | **Ej 38:** Recibe vendedor; devuelve cantidad de facturas y total de ventas. |
 | **04** | **Ej 7:** Recibe DNI cliente y devuelve el monto de su factura más alta. | **Ej 8:** Recibe producto; devuelve el precio máximo y mínimo de venta. |
 | **05** | **Ej 9:** Recibe código de producto y devuelve su precio promedio de venta. | **Ej 10:** Recibe vendedor; devuelve ventas y su % del total general. |
 | **06** | **Ej 11:** Recibe DNI cliente; devuelve gasto total y productos diferentes. | **Ej 12:** Recibe producto; devuelve facturas y el precio promedio de venta. |
@@ -12,7 +12,7 @@
 | **08** | **Ej 15:** Recibe rango de fechas; devuelve facturas y ventas en el período. | **Ej 16:** Recibe mes/año; devuelve cantidad de facturas y ventas totales. |
 | **09** | **Ej 17:** Recibe envase; devuelve cantidad de productos y ventas totales. | **Ej 18:** Recibe barrio; devuelve cantidad de vendedores y sus ventas totales. |
 | **10** | **Ej 19:** Recibe sabor; devuelve cantidad de productos y unidades vendidas. | **Ej 20:** Recibe estado; devuelve cantidad de clientes y ventas totales allí. |
-| **11** | **Ej 21:** Recibe vendedor; devuelve cantidad de facturas y total de ventas. | **Ej 22:** Recibe DNI de cliente; devuelve cantidad de facturas y total gastado. |
+| **11** | **Ej 39:** Recibe DNI cliente; devuelve gasto total y productos diferentes. | **Ej 40:** Recibe envase; devuelve cantidad de productos y ventas totales. |
 | **12** | **Ej 23:** Recibe producto; devuelve cantidad de facturas y unidades totales. | **Ej 24:** Recibe un año y devuelve el total de ventas realizadas en ese año. |
 | **13** | **Ej 25:** Recibe una fecha y devuelve el total de ventas de ese día. | **Ej 26:** Recibe código de producto y devuelve dinero total generado por él. |
 | **14** | **Ej 27:** Recibe un envase y devuelve el total de dinero generado por este. | **Ej 28:** Recibe un sabor y suma las unidades vendidas de ese sabor. |
