@@ -6,7 +6,7 @@
 | **02** | **Ej 3:** Recibe un sabor y devuelve el precio promedio de esos productos. | **Ej 4:** Recibe un barrio y devuelve el conteo de clientes que residen allí. |
 | **03** | **Ej 37:** Recibe una fecha y devuelve el total de ventas de ese día. | **Ej 38:** Recibe vendedor; devuelve cantidad de facturas y total de ventas. |
 | **04** | **Ej 7:** Recibe DNI cliente y devuelve el monto de su factura más alta. | **Ej 8:** Recibe producto; devuelve el precio máximo y mínimo de venta. |
-| **05** | **Ej 9:** Recibe código de producto y devuelve su precio promedio de venta. | **Ej 10:** Recibe vendedor; devuelve ventas y su % del total general. |
+| **05** |**Ej 47:** Recibe rango de fechas; devuelve facturas y ventas en el período. | **Ej 48:** Recibe una ciudad; devuelve cantidad de clientes y sus ventas totales. |
 | **06** | **Ej 11:** Recibe DNI cliente; devuelve gasto total y productos diferentes. | **Ej 12:** Recibe producto; devuelve facturas y el precio promedio de venta. |
 | **07** | **Ej 13:** Recibe límite crédito; devuelve clientes que lo superan y sus ventas. | **Ej 14:** Recibe ciudad; devuelve cantidad de clientes y sus ventas totales. |
 | **08** | **Ej 15:** Recibe rango de fechas; devuelve facturas y ventas en el período. | **Ej 16:** Recibe mes/año; devuelve cantidad de facturas y ventas totales. |
